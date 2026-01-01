@@ -1,0 +1,22 @@
+{
+  "name": "task-management",
+  "version": "1.0.0",
+  "description": "Simple Task Management Website with JWT Authentication",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["task", "management", "jwt", "turso"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "@libsql/client": "^0.14.0",
+    "dotenv": "^16.3.1"
+  }
+}
+
