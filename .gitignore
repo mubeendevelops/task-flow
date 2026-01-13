@@ -9,6 +9,7 @@ yarn-error.log*
 # Environment variables
 .env*
 !.env.example
+
 # OS / Editor noise
 .DS_Store
 .vscode/
