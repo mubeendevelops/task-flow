@@ -49,22 +49,22 @@ const authenticateToken = (req, res, next) => {
 // User Registration
 app.post("/register", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!username || !password) {
+    if (!email || !password) {
       return res
         .status(400)
-        .json({ error: "Username and password are required" });
+        .json({ error: "Email and password are required" });
     }
 
     // Check if user already exists
     const existingUser = await db.execute({
-      sql: "SELECT id FROM users WHERE username = ?",
-      args: [username],
+      sql: "SELECT id FROM users WHERE email = ?",
+      args: [email],
     });
 
     if (existingUser.rows.length > 0) {
-      return res.status(400).json({ error: "Username already exists" });
+      return res.status(400).json({ error: "Email already exists" });
     }
 
     // Hash password
@@ -72,8 +72,8 @@ app.post("/register", async (req, res) => {
 
     // Insert user
     const result = await db.execute({
-      sql: "INSERT INTO users (username, password) VALUES (?, ?)",
-      args: [username, hashedPassword],
+      sql: "INSERT INTO users (email, password) VALUES (?, ?)",
+      args: [email, hashedPassword],
     });
 
     res.status(201).json({ message: "User registered successfully" });
@@ -86,18 +86,18 @@ app.post("/register", async (req, res) => {
 // User Login
 app.post("/login", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!username || !password) {
+    if (!email || !password) {
       return res
         .status(400)
-        .json({ error: "Username and password are required" });
+        .json({ error: "Email and password are required" });
     }
 
     // Find user
     const result = await db.execute({
-      sql: "SELECT id, username, password FROM users WHERE username = ?",
-      args: [username],
+      sql: "SELECT id, email, password FROM users WHERE email = ?",
+      args: [email],
     });
 
     if (result.rows.length === 0) {
@@ -114,12 +114,12 @@ app.post("/login", async (req, res) => {
 
     // Generate JWT
     const token = jwt.sign(
-      { id: Number(user.id), username: user.username },
+      { id: Number(user.id), email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
 
-    res.json({ token, username: user.username });
+    res.json({ token, email: user.email });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ error: "Internal server error" });

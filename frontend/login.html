@@ -43,7 +43,7 @@
 
         <form id="loginForm">
           <div class="form-group">
-            <label for="username">
+            <label for="email">
               <svg
                 width="16"
                 height="16"
@@ -55,15 +55,15 @@
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
               </svg>
-              Username
+              Email
             </label>
             <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Enter your username"
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
               required
-              autocomplete="username"
+              autocomplete="email"
             />
           </div>
 
@@ -204,7 +204,7 @@
           const originalText = btnText.textContent;
           btnText.textContent = "Signing in...";
 
-          const username = document.getElementById("username").value;
+          const email = document.getElementById("email").value.trim();
           const password = document.getElementById("password").value;
 
           try {
@@ -213,7 +213,7 @@
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ username, password }),
+              body: JSON.stringify({ email, password }),
             });
 
             const data = await response.json();
@@ -225,7 +225,7 @@
               btnText.textContent = "Success! Redirecting...";
 
               localStorage.setItem("token", data.token);
-              localStorage.setItem("username", data.username);
+              localStorage.setItem("email", data.email);
 
               setTimeout(() => {
                 window.location.href = "dashboard.html";
@@ -251,8 +251,8 @@
         window.location.href = "dashboard.html";
       }
 
-      // Focus on username input on load
-      document.getElementById("username").focus();
+      // Focus on email input on load
+      document.getElementById("email").focus();
     </script>
   </body>
 </html>

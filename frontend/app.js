@@ -15,9 +15,9 @@ function getToken() {
     return localStorage.getItem('token');
 }
 
-// Get username from localStorage
-function getUsername() {
-    return localStorage.getItem('username');
+// Get email from localStorage
+function getEmail() {
+    return localStorage.getItem('email');
 }
 
 // Check if user is authenticated
@@ -49,7 +49,7 @@ async function apiRequest(url, options = {}) {
 
     if (response.status === 401 || response.status === 403) {
         localStorage.removeItem('token');
-        localStorage.removeItem('username');
+        localStorage.removeItem('email');
         window.location.href = 'login.html';
         return null;
     }
@@ -401,16 +401,16 @@ async function init() {
         return;
     }
 
-    // Display username
-    const username = getUsername();
-    if (username) {
-        document.getElementById('usernameDisplay').textContent = username;
+    // Display email
+    const email = getEmail();
+    if (email) {
+        document.getElementById('emailDisplay').textContent = email;
     }
 
     // Setup logout button
     document.getElementById('logoutBtn').addEventListener('click', () => {
         localStorage.removeItem('token');
-        localStorage.removeItem('username');
+        localStorage.removeItem('email');
         window.location.href = 'index.html';
     });
 
@@ -472,8 +472,22 @@ async function init() {
         submitBtn.innerHTML = originalText;
     });
 
-    // Set minimum date to today
+    // Setup date picker button (makes picking a date obvious on all themes)
     const dateInput = document.getElementById('taskDate');
+    const datePickerBtn = document.getElementById('datePickerBtn');
+    if (dateInput && datePickerBtn) {
+        datePickerBtn.addEventListener('click', () => {
+            // Chromium supports showPicker(); fallback to focus/click for other browsers
+            if (typeof dateInput.showPicker === 'function') {
+                dateInput.showPicker();
+            } else {
+                dateInput.focus();
+                dateInput.click();
+            }
+        });
+    }
+
+    // Set minimum date to today
     if (dateInput) {
         const today = new Date().toISOString().split('T')[0];
         dateInput.setAttribute('min', today);

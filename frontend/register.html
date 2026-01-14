@@ -45,7 +45,7 @@
 
         <form id="registerForm">
           <div class="form-group">
-            <label for="username">
+            <label for="email">
               <svg
                 width="16"
                 height="16"
@@ -57,18 +57,17 @@
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
               </svg>
-              Username
+              Email
             </label>
             <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Choose a username"
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
               required
-              autocomplete="username"
-              minlength="3"
+              autocomplete="email"
             />
-            <small class="form-hint">Must be at least 3 characters</small>
+            <small class="form-hint">We'll use this to identify your account</small>
           </div>
 
           <div class="form-group">
@@ -266,13 +265,13 @@
           successDiv.textContent = "";
           successDiv.style.display = "none";
 
-          const username = document.getElementById("username").value.trim();
+          const email = document.getElementById("email").value.trim();
           const password = document.getElementById("password").value;
 
           // Validation
-          if (username.length < 3) {
-            errorDiv.textContent =
-              "Username must be at least 3 characters long.";
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            errorDiv.textContent = "Please enter a valid email address.";
             errorDiv.style.display = "block";
             return;
           }
@@ -295,7 +294,7 @@
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ username, password }),
+              body: JSON.stringify({ email, password }),
             });
 
             const data = await response.json();
@@ -333,8 +332,8 @@
         window.location.href = "dashboard.html";
       }
 
-      // Focus on username input on load
-      document.getElementById("username").focus();
+      // Focus on email input on load
+      document.getElementById("email").focus();
     </script>
   </body>
 </html>
